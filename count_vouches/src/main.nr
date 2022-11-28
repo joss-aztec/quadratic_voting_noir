@@ -1,78 +1,42 @@
 use dep::std;
 
-global HASHES_MAX = 2;
-global VOUCHES_MAX = 2;
+global CANDIDATE_COUNT = 10;
+global TRANSCRIPT_LENGTH = 11; // 1 secret + CANDIDATE_COUNT
+global VOTER_COUNT = 2;
+global ALL_VOTES_COUNT = 20; // CANDIDATE_COUNT * VOTER_COUNT
 
-fn check_no_repeats(hashes: [Field; VOUCHES_MAX], hash_count: u8) {
-    for i in 0..VOUCHES_MAX {
-        for j in i + 1..VOUCHES_MAX {
-            if i as u8 < hash_count {
-                constrain hashes[i] != hashes[j];
-            }
-        };
-    };
-}
-
-fn contains<T>(arr: [T], elem: T) -> bool {
-    let mut elem_found = false;
-    for i in 0..std::array::len(arr) {
-        if arr[i] == elem {
-            elem_found = true;
-        }
-    };
-    elem_found
-}
-
-fn check_owned_hashes_exist(
-    all_hashes: [Field; HASHES_MAX],
-    owned_hashes: [Field; VOUCHES_MAX],
-    owned_vouch_count: u8
+fn check_commitments(
+    commitments: [Field; VOTER_COUNT],
+    secrets: [Field; VOTER_COUNT],
+    all_votes: [u32; ALL_VOTES_COUNT],
 ) {
-    let mut all_exist = true;
-    for i in 0..VOUCHES_MAX {
-        if i as u8 < owned_vouch_count & !contains(all_hashes, owned_hashes[i]) {
-            all_exist = false;
+    for i in 0..VOTER_COUNT {
+        let mut transcript = [0; TRANSCRIPT_LENGTH];
+        transcript[0] = secrets[i];
+        for j in 0..CANDIDATE_COUNT {
+            transcript[j + 1] = all_votes[i * CANDIDATE_COUNT + j] as Field;
+        };
+        constrain commitments[i] == std::hash::pedersen(transcript)[0];
+    };
+}
+
+fn sum_votes(
+    all_votes: [u32; ALL_VOTES_COUNT],
+) -> [u32; CANDIDATE_COUNT] {
+    let mut totals = [0; CANDIDATE_COUNT];
+    for i in 0..VOTER_COUNT {
+        for j in 0..CANDIDATE_COUNT {
+            totals[j] = totals[j] + all_votes[i * CANDIDATE_COUNT + j];
         }
     };
-    constrain all_exist == true;
-}
-
-fn hash_vouches(
-    recipient_id: Field,
-    votes: [u32; VOUCHES_MAX],
-    secrets: [Field; VOUCHES_MAX]
-) -> [Field; VOUCHES_MAX] {
-    let mut hashes = [0; VOUCHES_MAX];
-    for i in 0..VOUCHES_MAX {
-        let transcript = [recipient_id, votes[i] as Field, secrets[i]];
-        hashes[i] = std::hash::pedersen(transcript)[0];
-    };
-    hashes
-}
-
-fn sum_votes(votes: [u32], vote_count: u8) -> u32 {
-    let mut total = 0;
-    for i in 0..std::array::len(votes) {
-        if i as u8  < vote_count {
-            total = total + votes[i];
-        } 
-    };
-    total
+    totals
 }
 
 fn main(
-    all_hashes: pub [Field; HASHES_MAX],
-    owned_recipient_id: Field,
-    owned_votes: [u32; VOUCHES_MAX],
-    owned_secrets: [Field; VOUCHES_MAX],
-    owned_vouch_count: u8
-) -> pub u32 {
-    let owned_hashes = hash_vouches(
-        owned_recipient_id,
-        owned_votes,
-        owned_secrets
-    );
-    check_no_repeats(owned_hashes, owned_vouch_count);
-    check_owned_hashes_exist(all_hashes, owned_hashes, owned_vouch_count);
-    sum_votes(owned_votes, owned_vouch_count)
+    commitments: pub [Field; VOTER_COUNT],
+    all_votes: [u32; ALL_VOTES_COUNT],
+    secrets: [Field; VOTER_COUNT],
+) -> pub [u32; CANDIDATE_COUNT] {
+    check_commitments(commitments, secrets, all_votes);
+    sum_votes(all_votes)
 }

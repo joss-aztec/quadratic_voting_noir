@@ -1,6 +1,33 @@
-all_hashes = ["0x1ad39b7dca40219ac5e4373f318355eee0c9b26bc95070282d4a6dd759bb96be", "0x049c9712142e71014f35eb3e381b1a29557ae4a24ca663146c494b522eac1a74"]
-owned_recipient_id = 1
-owned_votes = [100, 100]
-owned_secrets = ["0xcc0db8baa0a1ad2937be6662f3aa6800009ea69776cba8f808b93061b51e9e", "0xcc0db8baa0a1ad2937be6662f3aa6800009ea69776cba8f808b93061b51e9e"]
-owned_vouch_count = 1
+commitments = [
+    "0x2a32daabcc0c97600ca6451af99651aa20e5a63d0f52de4c2c6158d97c7c3a79", # Alice
+    "0x0a92ce1029b4d9493b82120e9f1fe1b1b680462c40678286f320cd220e20aee5", # Bob
+]
+all_votes = [
+    # Alice
+    20,
+    4,
+    9,
+    4,
+    0,
+    17,
+    7,
+    9,
+    0,
+    8,
+    # Bob
+    0,
+    0,
+    2,
+    0,
+    3,
+    30,
+    0,
+    9,
+    0,
+    0,
+]
+secrets = [
+    "0x64fccf0dd40bcd3a76b1f7b8b63110440eab01f6efe885d419dd0fda0aa1d5", # Alice
+    "0x2a3aff13656d886d8588af5e42c706e3249d739bc52c8b36cfeeb6f672f531", # Bob
+]
 return = ""
