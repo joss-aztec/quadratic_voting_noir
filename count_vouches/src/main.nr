@@ -1,4 +1,4 @@
-asuse dep::std;
+use dep::std;
 
 global CANDIDATE_COUNT = 10;
 global VOTER_COUNT = 2;
