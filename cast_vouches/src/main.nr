@@ -28,6 +28,7 @@ fn calculate_ballot_commitment(
     let mut transcript = [0; CANDIDATE_COUNT + 1];
     transcript[0] = secret;
     for i in 0..CANDIDATE_COUNT {
+        // Pedersen expects a transcript of Field elements, hence the cast
         transcript[i + 1] = votes[i] as Field;
     };
     // Return the x coordinate of the resulting EC point

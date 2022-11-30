@@ -1,15 +1,11 @@
-token_budget = 1000
+# Alice Prover.toml
+token_budget = 100
 secret = "0x2a3aff13656d886d8588af5e42c706e3249d739bc52c8b36cfeeb6f672f531"
-votes = [
-    0,
-    0,
-    2,
-    0,
-    3,
-    30,
-    0,
-    9,
-    0,
-    0,
-]
+votes = [0, 0, 3, 1, 1, 8, 0, 5, 0, 0]
 return = ""
+
+# Bob Prover.toml
+#token_budget = 100
+#secret = "0x361e3141e57b0501d08c42e66324a5af8c09a831f51735939a8b26f5370a93"
+#votes = [0, 5, 5, 0, 2, 6, 0, 3, 1, 0]
+#return = ""
