@@ -1,0 +1,19 @@
+commitments = [
+    # Alice
+    "0x05866c88a8d9efa381c6505bbed2d9f4aa4a1303e512654aea45a7ba72ec11f3",
+    # Bob
+    "0x01814947b74eb804c472c2811a83fa12446a7fea49786954bf3229b9b3a8a712",
+]
+all_votes = [
+    # Alice
+    0, 0, 3, 1, 1, 8, 0, 5, 0, 0,
+    # Bob
+    0, 5, 5, 0, 2, 6, 0, 3, 1, 0,
+]
+secrets = [
+    # Alice
+    "0x2a3aff13656d886d8588af5e42c706e3249d739bc52c8b36cfeeb6f672f531",
+    # Bob
+    "0x361e3141e57b0501d08c42e66324a5af8c09a831f51735939a8b26f5370a93",
+]
+return = [0, 5, 8, 1, 3, 14, 0, 8, 1, 0]
